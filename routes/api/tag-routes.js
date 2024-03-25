@@ -32,13 +32,35 @@ router.get('/:id', async(req, res) => {
   // be sure to include its associated Product data
 });
 
-router.post('/', (req, res) => {
+router.post('/', async(req, res) => {
+  try {
+    const tagData = await Tag.create({tag_name: req.body.tag_name});
+    res.status(200).json(tagData);
+  } catch (err){
+    res.status(400).json(err);
+  }
   // create a new tag
 });
 
 router.put('/:id', (req, res) => {
+  Tag.update(req.body, {
+    where: {
+      id: req.params.id
+    }
+  })
+  .then(TagData => {
+    if (!TagData[0]) {
+      res.status(404).json({ message: 'No tag found with this id!'});
+      return;
+    }
+    res.json(TagData);
+  })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json(err);
+    });
+  });
   // update a tag's name by its `id` value
-});
 
 router.delete('/:id', (req, res) => {
   // delete on tag by its `id` value
