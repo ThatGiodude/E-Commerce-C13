@@ -12,7 +12,7 @@ ProductTag.init(
       allowNull: false,
       primaryKey: true,
       autoIncrement: true,
-    },
+    },// id column
     product_id: {
       type: DataTypes.INTEGER,
       refernce: {
